@@ -24,7 +24,7 @@ public class Student {
 
     public Student(String name, String tel, String birthday, int gender){
         no++;
-        sno = nowYear+""+no;
+        sno = nowYear + String.format("%04d",no);
         this.name = name;
         this.tel = tel;
         decideYMD_Age(birthday, gender);
