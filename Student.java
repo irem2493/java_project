@@ -44,6 +44,22 @@ public class Student {
         else if(gender == 2 || gender == 4) this.gender = "여자";
         else this.gender = "";
     }
+
+    //국어, 영어, 수학 점수 입력
+    public void inputKEM_Score(int kor_score, int eng_score, int math_score){
+        this.kor_score = kor_score;
+        this.eng_score = eng_score;
+        this.math_score = math_score;
+        avg = calcAvg(kor_score, eng_score, math_score);
+    }
+
+    //평균 계산
+    public double calcAvg(int kor_score, int eng_score, int math_score){
+        int sum = kor_score + eng_score + math_score;
+        double avg = sum / 3.0;
+        return avg;
+    }
+
     //학생 정보 출력 함수
     public void printInfo(){
         System.out.println("학번 : "+sno);
@@ -51,5 +67,9 @@ public class Student {
         System.out.println("전화번호 : " + tel);
         System.out.println("생년월일 : "+ year + "년 " + month + "월 " + day + "일");
         System.out.println("나이 : " + age);
+        System.out.println("학생의 국어점수 : " + kor_score);
+        System.out.println("학생의 영어점수 : " + eng_score);
+        System.out.println("학생의 수학점수 : " + math_score);
+        System.out.println("학생의 평균 : " + avg);
     }
 }
