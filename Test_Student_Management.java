@@ -126,9 +126,9 @@ public class Test_Student_Management {
                     }
                     if(years_count[year-1] > 0){
                         for(int i = 0; i < years_count.length; i++){
-                            if(students[i] != null && year-1 == i){
+                            if(students[i] != null && year == students[i].getYear()){
                                 students[i].printInfo();
-                                years_under60[i]++;
+                                if(students[i].getAvg() < 60) years_under60[year-1]++;
                             }
                         }System.out.println(year+"학년 중 평균이 60점 미만인 학생 수는 " + years_under60[year-1] + "명입니다.");
                     }else  System.out.println("조회할 " + year + "학년의 데이터가 없습니다.");
