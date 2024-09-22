@@ -2,14 +2,14 @@ package test1;
 
 public abstract class Test_Student {
     /*
-     * 학생은 번호, 이름, 성별, 학년, 국어, 영어, 수학점수, 등급으로 구성된다.				    --> 완료
-     * 남학생 전용과목은 기술, 여학생 전용과목은 가정 과목이 있다.							--> 완료
-     * 학년은 1, 2, 3학년이 존재한다.
+     * 학생은 번호, 이름, 성별, 학년, 국어, 영어, 수학점수, 등급으로 구성된다.				    ---> 완료
+     * 남학생 전용과목은 기술, 여학생 전용과목은 가정 과목이 있다.							---> 완료
+     * 학년은 1, 2, 3학년이 존재한다.                                                   ---> 완료
      *
      * 각 학년은 5명 씩이다.
      * 1학년 남 : 3명, 여 : 2명,
      * 2학년 남 : 2명, 여 : 3명,
-     * 3학년 남 : 3명, 여 : 2명
+     * 3학년 남 : 3명, 여 : 2명                                                       ---> 완료
      *
      * 등급은 A, B, C, D, F로 구분된다.												---> 완료
      * 학생 번호는 자동으로 부여된다.													---> 완료
@@ -24,7 +24,9 @@ public abstract class Test_Student {
     private String sno;
     private String name;
     private int year;
-    private int kor_score, eng_score, math_score;
+    private int kor_score;
+    private int eng_score;
+    private int math_score;
 
     public Test_Student(String name, int year, char gender, int kor_score, int eng_score, int math_score) {
         no++;
@@ -38,8 +40,15 @@ public abstract class Test_Student {
 
     public String getSno() {return sno;}
     public int getYear() {return year;}
+    public String getName() {return name;}
+    public int getKor_score() {return kor_score;}
+    public int getEng_score() {return eng_score;}
+    public int getMath_score() {return math_score;}
     public abstract char getGender();
+    public abstract int getCount();
+    public abstract double getAvg();
     public abstract void setGenderSub(int gender_subject_score);
     public abstract void decideGrade();
     public abstract void calcAvg(int kor_score, int eng_score, int math_score, int gender_subject_score);
+    public abstract void printInfo();
 }
