@@ -35,6 +35,7 @@ public class M_Student extends Test_Student{
         System.out.println("기술점수 : " + gender_subject_score);
         calcAvg(super.getKor_score(), super.getEng_score(), super.getMath_score(), gender_subject_score);
         System.out.println("평균 : " + avg);
+        System.out.println("학점 : " + grade);
     }
     @Override
     public char getGender() {
