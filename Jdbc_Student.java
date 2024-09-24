@@ -80,4 +80,16 @@ public class Jdbc_Student {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String toString(){
+        return "고유번호 : "+no+
+                "\n이름 : "+name+
+                "\n학년 : "+schoolYear+
+                "\n반 : "+clazz+
+                "\n번호 : "+sno+
+                "\n국어점수 : "+korScore+
+                "\n영어점수 : "+engScore+
+                "\n수학점수 : "+mathScore+
+                "\n";
+    }
 }
