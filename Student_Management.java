@@ -9,7 +9,6 @@ public class Student_Management {
 		String name;
 		int schoolYear, clazz, sno, korScore, engScore, mathScore, manu;
 		Jdbc_Student_Management jdbc_s = new Jdbc_Student_Management();
-		ArrayList<Jdbc_Student> studentList = new ArrayList<>();
 		manu = -1;
 		while(manu != 0) {
 			System.out.print("1.등록, 2.조회, 0.종료 (0 ~ 2까지의 수 입력): ");
@@ -30,8 +29,8 @@ public class Student_Management {
 				System.out.print("수학점수 입력 : ");
 				mathScore = sc.nextInt();
 				
-				studentList.add(new Jdbc_Student(name, schoolYear, clazz, sno, korScore, engScore, mathScore));
-				jdbc_s.insert(studentList);
+				Jdbc_Student js= new Jdbc_Student(name, schoolYear, clazz, sno, korScore, engScore, mathScore);
+				jdbc_s.insert(js);
 			}else if(manu == 2) {
 				//조회
 				System.out.print("학년 입력 : ");
