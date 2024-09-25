@@ -61,7 +61,7 @@ public class Jdbc_Student {
 	}
 	
 	public String toString() {
-		String str = "번호 : "+no+
+		String str = "고유번호 : "+no+
 				"\n이름 : "+name+
 				"\n학년 : "+schoolYear+
 				"\n반 : "+clazz+
