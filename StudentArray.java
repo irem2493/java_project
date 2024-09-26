@@ -38,5 +38,9 @@ public class StudentArray {
             arr[i].printInfo();
         }
     }
+    //랭킹 정하는 함수
 
+    
+    //배열의 길이값 리턴 함수
+    public int getLength(){ return current_idx;}
 }
