@@ -28,7 +28,7 @@ public class DicDTO {
     }
 
     Set<String> wrongWord() {
-        String query = "SELECT kor_word FROM my_dictionary WHERE remember = 0 ;";
+        String query = "SELECT kor_word FROM my_dictionary WHERE wrong = 1 ;";
         Set<String> korSet = new HashSet<>();
         int find = 0;
         try {
@@ -115,14 +115,16 @@ public class DicDTO {
     }
 
     public int searchEng(String word, String eng) {
-        String query = "SELECT eng_word FROM my_dictionary WHERE kor_word = ?;";
+        String query = "SELECT dno, eng_word FROM my_dictionary WHERE kor_word = ?;";
         String eng_word = null;
-        int find;
+        int dno = 0;
+        int find = 0;
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, word);
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
+                dno = rs.getInt("dno");
                 if(rs.getString("eng_word").equals(eng)) {
                     eng_word = rs.getString("eng_word");
                 }
@@ -130,20 +132,32 @@ public class DicDTO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if(eng_word != null) {
-            updateRemember(eng);
-            find = 1;
+        if(eng_word != null) find = 1;
+        else {
+            updateRemember(dno);
+            find = 0;
         }
-        else find = 0;
         return find;
     }
 
-    void updateRemember(String word){
-        String query = "UPDATE my_dictionary SET remember = 1 WHERE eng_word = ?;";
+    void updateRemember(int dno){
+        String query = "UPDATE my_dictionary SET wrong = 1 WHERE dno = ?;";
         int result = 0;
         String alert;
         try(PreparedStatement stmt = conn.prepareStatement(query);){
-            stmt.setString(1,word);
+            stmt.setInt(1,dno);
+            result = stmt.executeUpdate();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateWrong(String eng){
+        String query = "UPDATE my_dictionary SET wrong = 0 WHERE eng_word = ?;";
+        int result = 0;
+        String alert;
+        try(PreparedStatement stmt = conn.prepareStatement(query);){
+            stmt.setString(1,eng);
             result = stmt.executeUpdate();
         }catch (SQLException e) {
             e.printStackTrace();
@@ -152,8 +166,7 @@ public class DicDTO {
 
     public int insert(Map<String, String> dicKE) {
         int result = 0;
-        String query = "INSERT INTO my_dictionary(kor_word, eng_word, remember) VALUES (?, ?, 0);";
-
+        String query = "INSERT INTO my_dictionary(kor_word, eng_word, wrong) VALUES (?, ?, 0);";
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
             Set<String> keys = dicKE.keySet();
@@ -166,6 +179,34 @@ public class DicDTO {
             e.printStackTrace();
         }
         return result;
+    }
 
+    public String deleteKor(String kor){
+        String alert, query = "DELETE FROM my_dictionary WHERE kor_word = ?;";
+        int result = 0;
+        try(PreparedStatement stmt = conn.prepareStatement(query);){
+            stmt.setString(1,kor);
+            result = stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if(result > 0) alert = "단어를 삭제하였습니다.";
+        else alert = "삭제 실패";
+        return alert;
+    }
+
+    public String updateEng(String kor, String eng){
+        String alert, query = "UPDATE my_dictionary SET eng_word = ? WHERE kor_word = ?;";
+        int result = 0;
+        try(PreparedStatement stmt = conn.prepareStatement(query);){
+            stmt.setString(1,eng);
+            stmt.setString(2,kor);
+            result = stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if(result > 0) alert = "영어단어를 수정하였습니다.";
+        else alert = "삭제 실패";
+        return alert;
     }
 }
