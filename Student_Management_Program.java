@@ -5,12 +5,12 @@ import java.util.Scanner;
 public class Student_Management_Program {
     public static void main(String[] args){
         String name, tel, birthday;
-        int gender, kor_score, eng_score, math_score, menu;
+        int gender, kor_score, eng_score, math_score, menu, i;
         StudentArray students = new StudentArray();
         Scanner sc = new Scanner(System.in);
-        menu = -1;
+        menu = -1; i = 0;
         while(menu != 0){
-            System.out.print("1.학생 등록, 2.모든 학생 조회, 0.종료 (0 ~ 2 사이의 수 입력) : ");
+            System.out.print("1.학생 등록, 2.모든 학생 조회,  0.종료 (0 ~ 2 사이의 수 입력) : ");
             menu = sc.nextInt();
             if(menu == 1){
                 System.out.print("학생 이름 : ");
@@ -30,12 +30,15 @@ public class Student_Management_Program {
                 eng_score = sc.nextInt();
                 System.out.print("학생의 수학점수 : ");
                 math_score = sc.nextInt();
-                students.get(0).inputKEM_Score(kor_score, eng_score, math_score);
+                students.get(i++).inputKEM_Score(kor_score, eng_score, math_score);
                 System.out.println("학생 정보가 등록되었습니다.");
                 menu = -1;
             }else if(menu == 2){
+                i = 0;
                 System.out.println("모든 학생 정보를 조회합니다.");
-                students.getAll();
+                if(students.getLength() == 0) System.out.println("조회할 학생이 없습니다.");
+                else if(students.getLength() == 1) students.get(0).printInfo();
+                else students.getRank();
                 menu = -1;
             }
         }

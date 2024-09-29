@@ -32,7 +32,7 @@ public class Student {
     }
     //순위 setter
     public void setRank(int rank){
-        this.rank =rank;
+        this.rank = rank;
     }
     //생년월일 함수
     public void decideYMD_Age(String birthday, int gender){
@@ -63,6 +63,7 @@ public class Student {
     }
     //학생 정보 출력 함수
     public void printInfo(){
+        System.out.println("---------------------");
         System.out.println("학번 : "+sno);
         System.out.println("이름 : " + name);
         System.out.println("전화번호 : " + tel);

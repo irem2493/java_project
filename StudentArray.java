@@ -39,8 +39,26 @@ public class StudentArray {
         }
     }
     //랭킹 정하는 함수
-
+    public void getRank(){
+        int idx = 0;
+        //평균 오름차순 정렬
+        for(int i = 0; i < current_idx-1; i++){
+            for(int j = i+1; j < current_idx; j++){
+                if(arr[i].avg < arr[j].avg){
+                    Student tmp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = tmp;
+                }
+            }
+        }
+        //랭킹 셋팅
+        for(int i = 0; i < current_idx; i++){
+            arr[i].setRank(++idx);
+            arr[i].printRank();
+        }
+    }
     
     //배열의 길이값 리턴 함수
     public int getLength(){ return current_idx;}
+
 }
