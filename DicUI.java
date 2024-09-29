@@ -66,11 +66,12 @@ public class DicUI {
                 }
             } else if (menu == 3) {
                 if (dictDTO.selectAll() > 0) {
+                    String rdKor = dictDTO.randKor();
                     System.out.println("한글 단어가 나오면 영어 단어를 입력해주세요.");
-                    System.out.println("제시된 한글단어 : " + dictDTO.randKor());
+                    System.out.println("제시된 한글단어 : " + rdKor);
                     System.out.print("영어 단어 입력 : ");
                     String eng = sc.next();
-                    find = dictDTO.searchEng(dictDTO.randKor(), eng);
+                    find = dictDTO.searchEng(rdKor, eng);
                     if (find > 0) System.out.println("맞았습니다.");
                     else System.out.println("틀렸습니다.");
 
@@ -83,12 +84,13 @@ public class DicUI {
             } else if (menu == 4) {
                 System.out.println("틀린 단어 재응시합니다.");
                 if (dictDTO.randKor2() != null) {
+                    String rdKor = dictDTO.randKor2();
                     System.out.println("한글 단어가 나오면 영어 단어를 입력해주세요.");
-                    System.out.println("제시된 한글단어 : " + dictDTO.randKor2());
+                    System.out.println("제시된 한글단어 : " + rdKor);
                     System.out.print("영어 단어 입력 : ");
                     String eng = sc.next();
-                    dictDTO.searchEng(dictDTO.randKor2(), eng);
-                    dictDTO.updateWrong(eng);
+                    dictDTO.searchEng(rdKor, eng);
+                    System.out.println(dictDTO.updateWrong(eng));
                 } else System.out.println("틀린 단어가 없습니다.");
                 showMenu();
             } else if (menu == 5) {

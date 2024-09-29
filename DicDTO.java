@@ -1,7 +1,5 @@
 package dictionary;
 
-import quiz_program.DBConn;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -152,7 +150,7 @@ public class DicDTO {
         }
     }
 
-    public void updateWrong(String eng){
+    public String updateWrong(String eng){
         String query = "UPDATE my_dictionary SET wrong = 0 WHERE eng_word = ?;";
         int result = 0;
         String alert;
@@ -162,6 +160,9 @@ public class DicDTO {
         }catch (SQLException e) {
             e.printStackTrace();
         }
+        if(result > 0) alert = "맞췄습니다.";
+        else alert = "틀렸습니다.";
+        return alert;
     }
 
     public int insert(Map<String, String> dicKE) {
