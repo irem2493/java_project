@@ -1,14 +1,21 @@
-package dictionary;
+package c0927;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+
+import c0925.DBConn;
 
 public class DicDTO {
-    Connection conn = DBConn.getConnection();
+	
+	Connection conn = DBConn.getConnection();
 
     public int selectAll() {
         String query = "SELECT * FROM my_dictionary;";
@@ -140,11 +147,9 @@ public class DicDTO {
 
     void updateRemember(int dno){
         String query = "UPDATE my_dictionary SET wrong = 1 WHERE dno = ?;";
-        int result = 0;
-        String alert;
         try(PreparedStatement stmt = conn.prepareStatement(query);){
             stmt.setInt(1,dno);
-            result = stmt.executeUpdate();
+            stmt.executeUpdate();
         }catch (SQLException e) {
             e.printStackTrace();
         }

@@ -1,9 +1,13 @@
-package dictionary;
+package c0927;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
 
 public class DicUI {
-    DicDTO dictDTO = new DicDTO();
+	DicDTO dictDTO = new DicDTO();
     Scanner sc = new Scanner(System.in);
     public void intro() {
         System.out.println("한영사전 프로그램을 실행합니다.");
@@ -72,7 +76,10 @@ public class DicUI {
                     System.out.print("영어 단어 입력 : ");
                     String eng = sc.next();
                     find = dictDTO.searchEng(rdKor, eng);
-                    if (find > 0) System.out.println("맞았습니다.");
+                    if (find > 0) {
+                    	System.out.println("맞았습니다.");
+                    	dictDTO.updateWrong(eng);
+                    }
                     else System.out.println("틀렸습니다.");
 
                     showMenu();
