@@ -120,11 +120,16 @@ public class GameUi {
             loginMenu(id);
 
         }else if(sel == 3) {
+            int i = 0;
             System.out.println("랭킹을 확인합니다.");
             if(scoreDao.selectRank().size() == 0) System.out.println("조회할 랭킹 데이터가 없습니다.");
             else {
                 ArrayList<ScoreDTO> scoreRecord = scoreDao.selectRank();
-                for(ScoreDTO s : scoreRecord) System.out.println(s);
+                for(ScoreDTO s : scoreRecord) {
+                    System.out.println("--------------");
+                    System.out.print("[ "+(++i)+ "위 ] ");
+                    System.out.println(s);
+                }
             }
             loginMenu(id);
         }
