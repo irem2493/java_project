@@ -7,6 +7,7 @@ public class System_Ui {
     Scanner sc = new Scanner(System.in);
     BoardDAO boradDao = new BoardDAO();
     UserDAO userDao = new UserDAO();
+    ReplyDAO replyDao = new ReplyDAO();
     ArrayList<BoardDTO> boardList = new ArrayList<>();
     int menu = -1;
     public void intro() {
@@ -15,7 +16,7 @@ public class System_Ui {
     public void showMenu() {
         int sel;
         String id, pw;
-        if(menu != 3) showBoard();
+        showBoard();
         System.out.print("1.로그인, 2.회원가입, 3.게시물 보기, 0.종료 (0 ~ 3 사이의 수 입력) : ");
         menu = sc.nextInt();
 
@@ -46,7 +47,15 @@ public class System_Ui {
             showMenu();
         }
         else if(menu == 3) {    //게시물 보기
-            showBoardContents();
+            if(boardList.size() > 0){
+                System.out.print("확인 게시물 번호 입력 : ");
+                int pick = sc.nextInt();
+                showBoardContents(pick);
+                showReply(pick);
+            }else{
+                System.out.println("게시물이 없습니다.");
+            }
+
             showMenu();
         }else if(menu == 0) System.out.println("시스템을 종료합니다.");
         else {
@@ -58,6 +67,7 @@ public class System_Ui {
     void loginMenu(String id){
         int sel;
         String title, contents;
+        BoardDTO boardDTO;
         showBoard();
         System.out.print("1.게시물 등록, 2.게시물 보기, 3.로그아웃 (1 ~ 3 사이의 수 입력) : ");
         sel = sc.nextInt();
@@ -67,15 +77,25 @@ public class System_Ui {
             title = sc.next();
             System.out.print("게시물 내용 : ");
             contents = sc.next();
-            BoardDTO boardDTO = new BoardDTO(title,id);
+            boardDTO = new BoardDTO(title,id);
             boardDTO.setContents(contents);
             int result = boradDao.insertBoard(boardDTO);
             if(result > 0) System.out.println("게시물이 등록되었습니다.");
             else System.out.println("게시물 등록 실패");
             showBoard();
+            showMenu();
         }else if(sel == 2){
-            showBoardContents();
-            //댓글 달거냐고 물어보기
+            if(boardList.size() > 0) {
+                System.out.print("확인 게시물 번호 입력 : ");
+                int pick = sc.nextInt();
+                int bno = showBoardContents(pick);
+                showReply(bno);
+                showReplyMenu(id, bno, pick);
+            }
+            else {
+                System.out.println("게시물이 없습니다.");
+                loginMenu(id);
+            }
         }else if(sel == 3){
             int result = userDao.updateLogoutUser(id);
             if(result > 0) System.out.println("로그아웃 되었습니다.");
@@ -83,7 +103,6 @@ public class System_Ui {
         }else{
             System.out.println("1 ~ 3 사이의 수 입력하세요.");
             int result = userDao.updateLogoutUser(id);
-            if(result > 0) System.out.println("로그아웃되었습니다.");
             loginMenu(id);
         }
     }
@@ -91,20 +110,64 @@ public class System_Ui {
         System.out.println("-----------------------------------");
         System.out.println("번호    제목          작성자    작성일자");
         boardList = boradDao.selectBoard();
-        for(int i = 0; i < boardList.size(); i++) {
-            System.out.println(boardList.get(i).getBno() + "    " + boardList.get(i).getTitle() + "          " + boardList.get(i).getUid() + "    "+boardList.get(i).getCreateDate());
+        if(boardList.size() > 0){
+            for(int i = 0; i < boardList.size(); i++) {
+                System.out.println("-----------------------------------");
+                System.out.println(boardList.get(i).getBno() + "    " + boardList.get(i).getTitle() + "          " + boardList.get(i).getUid() + "    "+boardList.get(i).getCreateDate());
+            }
+            System.out.println("-----------------------------------");
+        }else {
+            System.out.println("게시물이 없습니다.");
+            System.out.println("-----------------------------------");
         }
-        System.out.println("-----------------------------------");
     }
-    void showBoardContents(){
-        System.out.print("확인 게시물 번호 입력 : ");
-        int sel = sc.nextInt();
+    int showBoardContents(int sel){
         System.out.println("-----------------------------------");
         System.out.println("번호    제목          내용          작성자    작성일자");
         BoardDTO boardDTO = boradDao.selectBoardContents(sel);
         if(boardDTO != null){
+            System.out.println("-----------------------------------");
             System.out.println(boardDTO.getBno() + "    " + boardDTO.getTitle() + "          " + boardDTO.getContents() +"          "+boardDTO.getUid() + "    "+boardDTO.getCreateDate());
         }
         System.out.println("-----------------------------------");
+        return sel;
+    }
+
+    void showReplyMenu(String id, int bno, int sel){
+        System.out.print("1.댓글달기, 2.메뉴이동 (1 ~ 2 사이의 수 입력) : ");
+        int pick = sc.nextInt();
+        if(pick == 1){
+            System.out.print("댓글 입력 : ");
+            String rcontents = sc.next();
+            ReplyDTO replyDto = new ReplyDTO(bno, rcontents, id);
+            if(replyDao.insertReply(replyDto) > 0) {
+                System.out.println("댓글이 등록되었습니다.");
+                showBoardContents(sel);
+                showReply(bno);
+            }
+            else System.out.println("댓글 등록 실패");
+            showReplyMenu(id, bno, pick);
+        }else if(pick == 2){
+            loginMenu(id);
+        }else {
+            System.out.println("1 ~ 2 사이의 수 입력해주세요.");
+            showReplyMenu(id, bno, pick);
+        }
+    }
+
+    void showReply(int bno){
+        System.out.println("번호    작성자          댓글내용              작성일자");
+        ArrayList<ReplyDTO> replyList = replyDao.selectReply(bno);
+        if(replyList.size() > 0){
+            for(int i = 0; i < replyList.size(); i++) {
+                System.out.println("-----------------------------------");
+                System.out.println(replyList.get(i).getRno() + "    " + replyList.get(i).getUid() + "          " + replyList.get(i).getRcontents() + "    "+replyList.get(i).getR_create_date());
+            }
+            System.out.println("-----------------------------------");
+        }else {
+            System.out.println("-----------------------------------");
+            System.out.println("댓글이 없습니다.");
+            System.out.println("-----------------------------------");
+        }
     }
 }
