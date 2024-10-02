@@ -1,11 +1,11 @@
-package rocScissorsPaperGame;
+package c1001;
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 public class GameUi {
-    Scanner sc = new Scanner(System.in);
+	Scanner sc = new Scanner(System.in);
     String id, pw;
     GameUserDAO userDao = new GameUserDAO();
     ScoreDAO scoreDao = new ScoreDAO();
@@ -19,7 +19,7 @@ public class GameUi {
         System.out.print("1.로그인, 2.회원가입, 0.종료 (0 ~ 2 사이의 수 입력) : ");
         menu = sc.nextInt();
         if(menu == 1) {
-            win_count = draw_count = lose_count = score = 0;
+            
             System.out.println("로그인을 합니다.");
             System.out.print("아이디 입력 : ");
             id = sc.next();
@@ -68,7 +68,6 @@ public class GameUi {
                     int com, result = 0;
                     com = rd.nextInt(3)+1;
                     result = user - com;
-
                     if(result == -1 || result == 2){	//lose
                         score -= 10;
                         lose_count++;
@@ -83,24 +82,31 @@ public class GameUi {
                     }
                 }else if(input == 0) {
                     System.out.println("게임을 종료합니다.");
+                    
                     scoreDto.setUid(id);
                     if(score <= 0) score = 0;
                     scoreDto.setScore(score);
                     scoreDto.setWin_count(win_count);
                     scoreDto.setDraw_count(draw_count);
                     scoreDto.setLose_count(lose_count);
+                    System.out.println("--- "+ id + "님의 이번 판 점수 ---");
+                    System.out.println("점수 : " + score);
+                    System.out.println("이긴 횟수 : " + win_count);
+                    System.out.println("비긴 횟수 : " + draw_count);
+                    System.out.println("진 횟수 : " + lose_count);
+                    
                     if(scoreDao.selectScore(id) > 0) {//update
                         if(scoreDao.selectBestScore(scoreDto) < score){
                             if(scoreDao.updateScore(scoreDto) > 0) System.out.println("최고점을 달성하였습니다!");
                             else System.out.println("update : 점수 반영 실패");
                         }else{
                             System.out.println("현재 "+id+"님의 최고점 : " + scoreDao.selectBestScore(scoreDto));
-                            System.out.println("현재 점수 : " + score);
                             System.out.println("최고점을 갱신해보세요!");
                         }
                     }else {//insert
                         System.out.println(scoreDao.insertScore(scoreDto));
                     }
+                    win_count = draw_count = lose_count = score = 0;
                     loginMenu(id);
                 }
                 else {
@@ -114,7 +120,7 @@ public class GameUi {
                 System.out.println("게임 전적 확인 실패");
             }
             else {
-                System.out.println(id + "님의 전적을 확인합니다.");
+                System.out.println(id + "님의 최고점수를 확인합니다.");
                 System.out.println(scoreDao.selectGameRecord(id));
             }
             loginMenu(id);

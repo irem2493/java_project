@@ -1,9 +1,9 @@
-package rocScissorsPaperGame;
+package c1001;
 
 public class ScoreDTO {
-    int sno, score, win_count, draw_count, lose_count;
-    String uid;
-
+	private int sno, score, win_count, draw_count, lose_count;
+	private String uid;
+	
     public int getSno() {
         return sno;
     }

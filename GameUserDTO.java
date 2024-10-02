@@ -1,9 +1,9 @@
-package rocScissorsPaperGame;
+package c1001;
 
 import java.sql.Timestamp;
 
 public class GameUserDTO {
-    private static int uno = 0;
+	private static int uno;
     private String uid, upw;
     private Timestamp join_date;
 

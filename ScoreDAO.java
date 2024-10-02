@@ -1,12 +1,16 @@
-package rocScissorsPaperGame;
+package c1001;
 
-import dictionary.DBConn;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
+import c0925.DBConn;
+
 public class ScoreDAO {
-    Connection conn = DBConn.getConnection();
+	Connection conn = DBConn.getConnection();
 
     //insert 하기 전에 확인용
     public int selectScore(String uid) {

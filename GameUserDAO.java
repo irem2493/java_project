@@ -1,14 +1,14 @@
-package rocScissorsPaperGame;
-
-import dictionary.DBConn;
+package c1001;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import c0925.DBConn;
+
 public class GameUserDAO {
-    Connection conn = DBConn.getConnection();
+	Connection conn = DBConn.getConnection();
 
     public String joinUser(GameUserDTO user) {
         String alert = "회원가입을 실패하였습니다.";
