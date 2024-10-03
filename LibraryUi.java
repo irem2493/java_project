@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class LibraryUi {
     Scanner sc = new Scanner(System.in);
     LibraryUserDAO libraryUserDao;
+    LibraryUserDTO libraryUserDto;
     public void intro() {
         System.out.println("도서관 프로그램을 실행합니다.");
     }
@@ -28,6 +29,14 @@ public class LibraryUi {
             }
         }else if(menu == 2) {
             System.out.println("회원등록을 합니다.");
+            System.out.print("1.관리자 회원가입, 2. 일반 회원가입, 0. 메뉴이동 (0 ~ 2 사이의 수 입력) : ");
+            int pick = sc.nextInt();
+            if(pick == 1){
+                libraryUserDto = new LibraryUserDTO();
+            }
+            else if(pick == 2){
+                libraryUserDto = new LibraryMemberDTO();
+            }
             System.out.print("아이디 입력 : ");
             id = sc.next();
             while(libraryUserDao.checkId(id) > 0) {
@@ -36,8 +45,9 @@ public class LibraryUi {
             }
             System.out.print("패스워드 입력 : ");
             pw = sc.next();
-            LibraryUserDTO uDto = new LibraryUserDTO(id, pw);
-            System.out.println(libraryUserDao.joinUser(uDto));
+            libraryUserDto.setId(id);
+            libraryUserDto.setPw(pw);
+            System.out.println(libraryUserDao.joinUser(libraryUserDto));
             showMenu();
         }else if(menu == 0) {
             System.out.println("게임을 종료합니다.");

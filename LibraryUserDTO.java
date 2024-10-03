@@ -8,10 +8,8 @@ public class LibraryUserDTO {
     private String id, pw;
     private Timestamp join_date, update_date;
 
-    public LibraryUserDTO(String id, String pw) {
+    public LibraryUserDTO() {
         ++no;
-       this.id = id;
-        this.pw = pw;
     }
     public static int getNo() {
         return no;
