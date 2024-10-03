@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class LibraryUi {
     Scanner sc = new Scanner(System.in);
-    LibraryUserDAO libraryUserDao;
-    LibraryUserDTO libraryUserDto;
+    LibraryUserDAO libraryUserDao = null;
+    LibraryUserDTO libraryUserDto = null;
     public void intro() {
         System.out.println("도서관 프로그램을 실행합니다.");
     }
@@ -16,6 +16,17 @@ public class LibraryUi {
         menu = sc.nextInt();
         if(menu == 1) {
             System.out.println("로그인을 합니다.");
+            System.out.print("1.관리자 로그인, 2.일반 로그인, 0.메뉴이동 (0 ~ 2 사이의 수 입력) : ");
+            int pick = sc.nextInt();
+            if(pick == 1) libraryUserDao = new LibraryLibrarianDAO();
+            else if(pick == 2) libraryUserDao = new LibraryMemberDAO();
+            else if(pick == 3) showMenu();
+            else{
+                if(libraryUserDao == null){
+                    System.out.println("0 ~ 2 사이의 수 입력해주세요.");
+                    menu = 1;
+                }
+            }
             System.out.print("아이디 입력 : ");
             id = sc.next();
             System.out.print("패스워드 입력 : ");
@@ -32,10 +43,19 @@ public class LibraryUi {
             System.out.print("1.관리자 회원가입, 2. 일반 회원가입, 0. 메뉴이동 (0 ~ 2 사이의 수 입력) : ");
             int pick = sc.nextInt();
             if(pick == 1){
+                libraryUserDao = new LibraryLibrarianDAO();
                 libraryUserDto = new LibraryUserDTO();
             }
             else if(pick == 2){
+                libraryUserDao = new LibraryMemberDAO();
                 libraryUserDto = new LibraryMemberDTO();
+            }
+            else if(pick == 3) showMenu();
+            else{
+                if(libraryUserDao == null){
+                    System.out.println("0 ~ 2 사이의 수 입력해주세요.");
+                    menu = 2;
+                }
             }
             System.out.print("아이디 입력 : ");
             id = sc.next();
@@ -50,7 +70,7 @@ public class LibraryUi {
             System.out.println(libraryUserDao.joinUser(libraryUserDto));
             showMenu();
         }else if(menu == 0) {
-            System.out.println("게임을 종료합니다.");
+            System.out.println("도서관 프로그램을 종료합니다.");
         }
         else {
             System.out.println("0 ~ 2 사이의 수 입력해주세요.");

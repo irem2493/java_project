@@ -11,11 +11,11 @@ public class LibraryMemberDAO extends LibraryUserDAO{
 
     public String joinUser(LibraryUserDTO user) {
         String alert = "회원가입을 실패하였습니다.";
-        String query = "INSERT INTO libray_member(mno, mid, mpw, join_date) VALUES(?,?,?,now());";
+        String query = "INSERT INTO libray_member(mno, mid, mpw, m_join_date) VALUES(?,?,?,now());";
         int result = 0;
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setInt(1,LibraryUserDTO.getNo());
+            stmt.setInt(1,user.getNo());
             stmt.setString(2, user.getId());
             stmt.setString(3, user.getPw());
             result = stmt.executeUpdate();

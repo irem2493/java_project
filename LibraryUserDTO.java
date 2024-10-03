@@ -3,20 +3,17 @@ package ribrary_program;
 import java.sql.Timestamp;
 
 public class LibraryUserDTO {
-
     private static int no;
     private String id, pw;
     private Timestamp join_date, update_date;
 
-    public LibraryUserDTO() {
-        ++no;
-    }
-    public static int getNo() {
+    public LibraryUserDTO(){++no;}
+
+    public int getNo(){
         return no;
     }
-
-    public static void setNo(int no) {
-        LibraryUserDTO.no = no;
+    public void setNo(int no){
+        this.no = no;
     }
     public String getId() {
         return id;
