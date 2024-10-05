@@ -13,7 +13,10 @@ public class LibraryBookDAO {
 
     public ArrayList<LibraryBookDTO> selectBook(String title){
         ArrayList<LibraryBookDTO> rb = new ArrayList<>();
-        String query = "SELECT bno, title, writer FROM library_book WHERE title like ?;";
+        String query = "SELECT b.bno, b.title, b.writer, r.rent_yn\n" +
+                "FROM library_book b, book_rent r\n" +
+                "WHERE r.bno = \n" +
+                "(SELECT bno FROM library_book WHERE title LIKE ?);";
         try {
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1,"%"+title+"%");
@@ -21,6 +24,7 @@ public class LibraryBookDAO {
             while(rs.next()){
                 LibraryBookDTO rbDto = new LibraryBookDTO(rs.getString("title"),rs.getString("writer"));
                 rbDto.setBno(rs.getInt("bno"));
+                rbDto.setRent_yn(rs.getString("rent_yn"));
                 rb.add(rbDto);
             }
         } catch (SQLException e) {

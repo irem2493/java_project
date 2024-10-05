@@ -9,6 +9,7 @@ public class LibraryBookDTO {
     private String title;
     private String writer;
     private Timestamp enroll_date, b_update_date;
+    private String rent_yn;
 
     public LibraryBookDTO(String title, String writer ){
         this.title = title;
@@ -57,6 +58,14 @@ public class LibraryBookDTO {
     public String toString(){
         return "책 번호 : " + bno + "\n"+
                 "책 이름 : " + title + "\n"+
-                "책 저자 : " + writer + "\n";
+                "책 저자 : " + writer + "\n"+
+                "대여 여부 : " + rent_yn;
+    }
+
+    public String getRent_yn() {
+        return rent_yn;
+    }
+    public void setRent_yn(String rent_yn) {
+        this.rent_yn = rent_yn;
     }
 }

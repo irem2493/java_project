@@ -95,6 +95,7 @@ public class LibraryUi {
                 for(LibraryBookDTO b: bookList) {
                     System.out.println("-----------------------------");
                     System.out.println(b);
+                    System.out.println();
                     bnoList.add(b.getBno());
                 }
                 System.out.print("대출하실 책 번호 입력 : ");
