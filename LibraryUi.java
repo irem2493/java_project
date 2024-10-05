@@ -1,11 +1,15 @@
 package ribrary_program;
 
+import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class LibraryUi {
     Scanner sc = new Scanner(System.in);
     LibraryUserDAO libraryUserDao = null;
     LibraryUserDTO libraryUserDto = null;
+    LibraryBookDAO libraryBookDao = new LibraryBookDAO();
+    RentBookDAO rentBookDao = new RentBookDAO();
     public void intro() {
         System.out.println("도서관 프로그램을 실행합니다.");
     }
@@ -43,8 +47,9 @@ public class LibraryUi {
             System.out.print("1.관리자 회원가입, 2. 일반 회원가입, 0. 메뉴이동 (0 ~ 2 사이의 수 입력) : ");
             int pick = sc.nextInt();
             if(pick == 1){
-                libraryUserDao = new LibraryLibrarianDAO();
+                libraryUserDao = new LibraryMemberDAO();
                 libraryUserDto = new LibraryUserDTO();
+
             }
             else if(pick == 2){
                 libraryUserDao = new LibraryMemberDAO();
@@ -78,7 +83,41 @@ public class LibraryUi {
         }
     }
     void loginMenu(String id){
-        int sel = -1;
+        System.out.print("1.책 검색, 2.로그아웃 : (1 ~ 2 사이의 수 입력) : ");
+        int sel = sc.nextInt();
+        if(sel == 1){
+            int find = 0;
+            System.out.print("도서명 검색 : ");
+            String title = sc.next();
+            ArrayList<LibraryBookDTO> bookList = libraryBookDao.selectBook(title);
+            if(bookList.size() > 0){
+                ArrayList<Integer> bnoList = new ArrayList<>();
+                for(LibraryBookDTO b: bookList) {
+                    System.out.println("-----------------------------");
+                    System.out.println(b);
+                    bnoList.add(b.getBno());
+                }
+                System.out.print("대출하실 책 번호 입력 : ");
+                int bno = sc.nextInt();
+                int result = 0;
+                for(int i : bnoList){
+                    if(i == bno){
+                        find++;
+                        result= rentBookDao.insertRentBook(id,bno);
+
+
+                    }
+                }
+                if(result > 0) System.out.println("대출되었습니다.");
+                //대출중인 도서인지 아닌지 확인하기
+                if(find == 0) System.out.println("책 번호를 확인해주세요.");
+
+            }else System.out.println("검색 결과가 없습니다.");
+        }else if(sel == 2) showMenu();
+        else{
+            System.out.println("1 ~ 2 사이의 수를 입력하세요.");
+            loginMenu(id);
+        }
 
     }
 }

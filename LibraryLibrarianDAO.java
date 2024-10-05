@@ -11,7 +11,7 @@ public class LibraryLibrarianDAO extends LibraryUserDAO{
 
     public String joinUser(LibraryUserDTO user) {
         String alert = "회원가입을 실패하였습니다.";
-        String query = "INSERT INTO libray_librarian(lno, lid, lpw, l_join_date) VALUES(?,?,?,now());";
+        String query = "INSERT INTO library_librarian(lno, lid, lpw, l_join_date) VALUES(?,?,?,now());";
         int result = 0;
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -28,7 +28,7 @@ public class LibraryLibrarianDAO extends LibraryUserDAO{
     }
 
     public int checkId(String id) {
-        String query = "SELECT lid FROM libray_librarian WHERE lid = ?;";
+        String query = "SELECT lid FROM library_librarian WHERE lid = ?;";
         int find = 0;
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -43,7 +43,7 @@ public class LibraryLibrarianDAO extends LibraryUserDAO{
         return find;
     }
     public int loginUser(String id, String pw){
-        String query = "SELECT COUNT(*) count FROM libray_librarian WHERE lid = ? AND lpw = ?;";
+        String query = "SELECT COUNT(*) count FROM library_librarian WHERE lid = ? AND lpw = ?;";
         int find = 0;
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
