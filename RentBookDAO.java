@@ -4,6 +4,7 @@ import dictionary.DBConn;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class RentBookDAO {
@@ -22,5 +23,19 @@ public class RentBookDAO {
         }
         return result;
     }
-
+    public String selectReturn_yn(int bno){
+        String return_yn = "대출 가능";
+        String query = "SELECT rent_yn FROM book_rent WHERE bno = ?;";
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, bno);
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()){
+                return_yn = rs.getString("rent_yn");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return return_yn;
+    }
 }
