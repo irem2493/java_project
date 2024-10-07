@@ -94,5 +94,13 @@ public class RentBookDTO {
         this.writer = writer;
     }
 
-    
+    public String toString(){
+        return "책 번호 : " + bno + "\n"+
+                "책 이름 : " + title + "\n"+
+                "책 저자 : " + writer + "\n"+
+                "책 대출일 : " + rent_date + "\n"+
+                "책 반납일 : " + rent_date + "\n"+
+                "대여 여부 : " + rent_yn+ "\n"+
+                "연체 여부 : " + over_due_m;
+    }
 }
