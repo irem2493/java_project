@@ -97,7 +97,10 @@ public class LibraryUi {
                     System.out.println();
                     bnoList.add(b.getBno());
                 }
-                rentBook(id, bnoList);
+                System.out.print("1.책 대출, 2. 책 반납, 3. 메뉴이동 (1 ~ 3 사이의 수 입력) : ");
+                int pick = sc.nextInt();
+                if(pick == 1) rentBook(id, bnoList);
+                else if(pick == 2){}
             }else System.out.println("검색 결과가 없습니다.");
         }else if(sel == 2) showMenu();
         else{
@@ -125,5 +128,14 @@ public class LibraryUi {
             }
         }
         loginMenu(id);
+    }
+
+    void returnBook(String id){
+        ArrayList<RentBookDTO> rbList =  rentBookDao.showReturnBook(id);
+        if(rbList.size() > 0){
+            for(RentBookDTO rentBookDTO : rbList)
+                System.out.println(rentBookDTO);
+        }else System.out.println("대출하신 책이 없습니다.");
+
     }
 }

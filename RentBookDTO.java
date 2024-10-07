@@ -7,8 +7,12 @@ public class RentBookDTO {
     private int bno;
     private String lid;
     private String mid;
-    private String rent_yn;private String over_due_m;
+    private String rent_yn;
+    private String over_due_m;
     private Timestamp rent_date, return_date;
+
+    private String title;
+    private String writer;
 
     public int getRno() {
         return rno;
@@ -73,4 +77,22 @@ public class RentBookDTO {
     public void setReturn_date(Timestamp return_date) {
         this.return_date = return_date;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    
 }
