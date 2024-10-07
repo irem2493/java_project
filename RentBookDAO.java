@@ -67,4 +67,17 @@ public class RentBookDAO {
             e.printStackTrace();
         }return rb;
     }
+
+    public int deleteRentBook(int bno){
+        String query = "DELETE FROM book_rent WHERE bno = ?;";
+        int result = 0;
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, bno);
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

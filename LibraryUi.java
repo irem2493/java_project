@@ -133,12 +133,21 @@ public class LibraryUi {
 
     void returnBook(String id){
         ArrayList<RentBookDTO> rbList =  rentBookDao.showReturnBook(id);
+        ArrayList<Integer> bnoList = new ArrayList<>();
+        int j = 0, result = 0;
         if(rbList.size() > 0){
             System.out.println("대출 목록");
             for(RentBookDTO rentBookDTO : rbList){
                 System.out.println("-----------------------------");
                 System.out.println(rentBookDTO);
-            }
+                bnoList.add(rentBookDTO.getBno());
+            } System.out.println("-----------------------------");
+
+            for(int i = 0; i < bnoList.size(); i++){
+                result += rentBookDao.deleteRentBook(bnoList.get(j++));
+            }if(result == bnoList.size())System.out.println("반납되었습니다.");
+            else System.out.println("반납 처리 되지 않은 도서가 있습니다. 데스크에서 문의 바랍니다.");
+
         }else System.out.println("대출하신 책이 없습니다.");
 
     }
