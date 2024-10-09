@@ -46,4 +46,19 @@ public class LibraryBookDAO {
         }
         return result;
     }
+
+    public int updateBook(String title, String writer, int bno){
+        String query = "UDPATE library_book SET title = ?, writer = ? where bno = ?;";
+        int result = 0;
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, title);
+            pstmt.setString(2,writer);
+            pstmt.setInt(3, bno);
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

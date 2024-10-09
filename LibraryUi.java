@@ -166,7 +166,7 @@ public class LibraryUi {
     }
     void loginMenuLibrarianBook(String id){
         int result = 0;
-        System.out.print("1.책정보 등록, 2.책정보 수정, 3.책정보 삭제, 4.메뉴 이동  (1 ~ 4 사이의 수 입력) : ");
+        System.out.print("1.책정보 등록, 2.책정보 수정, 3.책정보 삭제, 4.메뉴 이동 (1 ~ 4 사이의 수 입력) : ");
         int pick = sc.nextInt();
         if(pick == 1){
             System.out.println("책정보를 등록합니다.");
@@ -175,7 +175,7 @@ public class LibraryUi {
             sc.nextLine();
             System.out.print("책저자 : ");
             String writer = sc.nextLine();
-            sc.nextLine();
+            System.out.println(title);
             LibraryBookDTO libraryBookDto = new LibraryBookDTO(title, writer);
             result = libraryBookDao.insertBook(libraryBookDto);
             if(result > 0) System.out.println("책정보가 성공적으로 등록되었습니다.");
@@ -199,11 +199,21 @@ public class LibraryUi {
                 int bno = sc.nextInt();
                 for(int i : bnoList){
                     if(i == bno){
-                        
+                        System.out.print("책제목 : ");
+                        String u_title = sc.nextLine();
+                        sc.nextLine();
+                        System.out.print("책저자 : ");
+                        String u_writer = sc.nextLine();
+                        sc.nextLine();
+                        result = libraryBookDao.updateBook(u_title, u_writer,bno);
                     }
-                }
-
+                }if(result > 0) System.out.println("성공적으로 책정보를 수정하였습니다.");
+                else System.out.println("책정보 수정을 실패하였습니다.");
             }
+        }else if(pick == 4) loginMenuLibrarian(id);
+        else{
+            System.out.println("1 ~ 4 사이의 수를 입력해주세요.");
+            loginMenuLibrarianBook(id);
         }
     }
 
