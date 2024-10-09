@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class LibraryBookDAO {
     Connection conn = DBConn.getConnection();
 
-    public ArrayList<LibraryBookDTO> selectBook(String title){
+    public ArrayList<LibraryBookDTO> selectRentBook(String title){
         ArrayList<LibraryBookDTO> rb = new ArrayList<>();
         String query = "SELECT b.bno, b.title, b.writer, r.rent_yn\n" +
                 "FROM library_book b, book_rent r\n" +

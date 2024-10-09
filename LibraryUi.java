@@ -90,8 +90,9 @@ public class LibraryUi {
         int sel = sc.nextInt();
         if(sel == 1){
             System.out.print("도서명 검색 : ");
-            String title = sc.next();
-            ArrayList<LibraryBookDTO> bookList = libraryBookDao.selectBook(title);
+            sc.nextLine();
+            String title = sc.nextLine();
+            ArrayList<LibraryBookDTO> bookList = libraryBookDao.selectRentBook(title);
             if(bookList.size() > 0){
                 ArrayList<Integer> bnoList = new ArrayList<>();
                 for(LibraryBookDTO b: bookList) {
@@ -162,6 +163,11 @@ public class LibraryUi {
         int sel = sc.nextInt();
         if(sel == 1){
             loginMenuLibrarianBook(id);
+        }else if(sel == 3){
+            showMenu();
+        }else {
+            System.out.println("1 ~ 3 사이의 수 입력해주세요.");
+            loginMenuLibrarian(id);
         }
     }
     void loginMenuLibrarianBook(String id){
@@ -170,23 +176,23 @@ public class LibraryUi {
         int pick = sc.nextInt();
         if(pick == 1){
             System.out.println("책정보를 등록합니다.");
+            sc.nextLine();
             System.out.print("책제목 : ");
             String title = sc.nextLine();
-            sc.nextLine();
             System.out.print("책저자 : ");
             String writer = sc.nextLine();
-            System.out.println(title);
             LibraryBookDTO libraryBookDto = new LibraryBookDTO(title, writer);
             result = libraryBookDao.insertBook(libraryBookDto);
             if(result > 0) System.out.println("책정보가 성공적으로 등록되었습니다.");
             else System.out.println("책정보 등록이 실패되었습니다.");
-
+            loginMenuLibrarianBook(id);
         }else if(pick == 2){
             int find = 0;
             System.out.println("책정보를 수정합니다.");
             System.out.print("도서명 검색 : ");
-            String title = sc.next();
-            ArrayList<LibraryBookDTO> bookList = libraryBookDao.selectBook(title);
+            sc.nextLine();
+            String title = sc.nextLine();
+            ArrayList<LibraryBookDTO> bookList = libraryBookDao.selectRentBook(title);
             if(bookList.size() > 0){
                 ArrayList<Integer> bnoList = new ArrayList<>();
                 for(LibraryBookDTO b: bookList) {
@@ -200,24 +206,24 @@ public class LibraryUi {
                 for(int i : bnoList){
                     if(i == bno){
                         System.out.print("책제목 : ");
-                        String u_title = sc.nextLine();
                         sc.nextLine();
+                        String u_title = sc.nextLine();
                         System.out.print("책저자 : ");
                         String u_writer = sc.nextLine();
-                        sc.nextLine();
                         result = libraryBookDao.updateBook(u_title, u_writer,bno);
                     }
                 }if(result > 0) System.out.println("성공적으로 책정보를 수정하였습니다.");
                 else System.out.println("책정보 수정을 실패하였습니다.");
+            }else{
+                System.out.println("검색한 결과가 없습니다.");
             }
+            loginMenuLibrarianBook(id);
         }else if(pick == 4) loginMenuLibrarian(id);
         else{
             System.out.println("1 ~ 4 사이의 수를 입력해주세요.");
             loginMenuLibrarianBook(id);
         }
-    }
 
-    void searchBookTitle(){
 
     }
 }
