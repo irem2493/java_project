@@ -32,4 +32,18 @@ public class LibraryBookDAO {
         }
         return rb;
     }
+
+    public int insertBook(LibraryBookDTO rbDto){
+        String query = "INSERT INTO library_book(title, writer, enroll_date) VALUES (?,?,NOW());";
+        int result = 0;
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1,rbDto.getTitle());
+            pstmt.setString(2,rbDto.getWriter());
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

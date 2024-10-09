@@ -37,7 +37,10 @@ public class LibraryUi {
             pw = sc.next();
             //관리자세요? 회원이세요? 회원로그인, 관리자 로그인
             int result = libraryUserDao.loginUser(id, pw);
-            if(result > 0) loginMenu(id);
+            if(result > 0){
+                if(pick == 1) loginMenuLibrarian(id);
+                else if(pick == 2) loginMenuMember(id);
+            }
             else {
                 System.out.println("아이디, 패스워드를 확인해주세요.");
                 showMenu();
@@ -47,7 +50,7 @@ public class LibraryUi {
             System.out.print("1.관리자 회원가입, 2. 일반 회원가입, 0. 메뉴이동 (0 ~ 2 사이의 수 입력) : ");
             int pick = sc.nextInt();
             if(pick == 1){
-                libraryUserDao = new LibraryMemberDAO();
+                libraryUserDao = new LibraryLibrarianDAO();
                 libraryUserDto = new LibraryUserDTO();
 
             }
@@ -82,7 +85,7 @@ public class LibraryUi {
             showMenu();
         }
     }
-    void loginMenu(String id){
+    void loginMenuMember(String id){
         System.out.print("1.책 검색, 2.책 반납, 3.로그아웃 : (1 ~ 3 사이의 수 입력) : ");
         int sel = sc.nextInt();
         if(sel == 1){
@@ -101,12 +104,15 @@ public class LibraryUi {
                 int pick = sc.nextInt();
                 if(pick == 1) rentBook(id, bnoList);
 
-            }else System.out.println("검색 결과가 없습니다.");
+            }else {
+                System.out.println("검색 결과가 없습니다.");
+                loginMenuMember(id);
+            }
         }else if(sel == 2) returnBook(id);
         else if(sel == 3) showMenu();
         else{
             System.out.println("1 ~ 2 사이의 수를 입력하세요.");
-            loginMenu(id);
+            loginMenuMember(id);
         }
     }
     void rentBook(String id, ArrayList<Integer> bnoList){
@@ -128,7 +134,7 @@ public class LibraryUi {
                 System.out.println("책 번호를 확인해주세요.");
             }
         }
-        loginMenu(id);
+        loginMenuMember(id);
     }
 
     void returnBook(String id){
@@ -149,6 +155,59 @@ public class LibraryUi {
             else System.out.println("반납 처리 되지 않은 도서가 있습니다. 데스크에서 문의 바랍니다.");
 
         }else System.out.println("대출하신 책이 없습니다.");
+    }
+
+    void loginMenuLibrarian(String id){
+        System.out.print("1.책 정보 관리 메뉴 이동, 2. 회원 대출/반납 관리 메뉴 이동, 3.로그아웃 : (1 ~ 3 사이의 수 입력) : ");
+        int sel = sc.nextInt();
+        if(sel == 1){
+            loginMenuLibrarianBook(id);
+        }
+    }
+    void loginMenuLibrarianBook(String id){
+        int result = 0;
+        System.out.print("1.책정보 등록, 2.책정보 수정, 3.책정보 삭제, 4.메뉴 이동  (1 ~ 4 사이의 수 입력) : ");
+        int pick = sc.nextInt();
+        if(pick == 1){
+            System.out.println("책정보를 등록합니다.");
+            System.out.print("책제목 : ");
+            String title = sc.nextLine();
+            sc.nextLine();
+            System.out.print("책저자 : ");
+            String writer = sc.nextLine();
+            sc.nextLine();
+            LibraryBookDTO libraryBookDto = new LibraryBookDTO(title, writer);
+            result = libraryBookDao.insertBook(libraryBookDto);
+            if(result > 0) System.out.println("책정보가 성공적으로 등록되었습니다.");
+            else System.out.println("책정보 등록이 실패되었습니다.");
+
+        }else if(pick == 2){
+            int find = 0;
+            System.out.println("책정보를 수정합니다.");
+            System.out.print("도서명 검색 : ");
+            String title = sc.next();
+            ArrayList<LibraryBookDTO> bookList = libraryBookDao.selectBook(title);
+            if(bookList.size() > 0){
+                ArrayList<Integer> bnoList = new ArrayList<>();
+                for(LibraryBookDTO b: bookList) {
+                    System.out.println("-----------------------------");
+                    System.out.println(b);
+                    System.out.println();
+                    bnoList.add(b.getBno());
+                }
+                System.out.println("수정할 책 번호 입력 :");
+                int bno = sc.nextInt();
+                for(int i : bnoList){
+                    if(i == bno){
+                        
+                    }
+                }
+
+            }
+        }
+    }
+
+    void searchBookTitle(){
 
     }
 }
