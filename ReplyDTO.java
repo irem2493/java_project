@@ -1,9 +1,9 @@
-package board_user_management;
+package c0930;
 
 import java.sql.Timestamp;
 
 public class ReplyDTO {
-    private int rno, bno;
+	private int rno, bno;
     private String rcontents, uid;
     private Timestamp r_create_date;
     private Timestamp r_update_date;

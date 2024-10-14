@@ -1,10 +1,10 @@
-package board_user_management;
+package c0930;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class System_Ui {
-    Scanner sc = new Scanner(System.in);
+	Scanner sc = new Scanner(System.in);
     BoardDAO boradDao = new BoardDAO();
     UserDAO userDao = new UserDAO();
     ReplyDAO replyDao = new ReplyDAO();
@@ -102,7 +102,7 @@ public class System_Ui {
             showMenu();
         }else{
             System.out.println("1 ~ 3 사이의 수 입력하세요.");
-            int result = userDao.updateLogoutUser(id);
+            userDao.updateLogoutUser(id);
             loginMenu(id);
         }
     }
@@ -134,8 +134,9 @@ public class System_Ui {
     }
 
     void showReplyMenu(String id, int bno, int sel){
-        System.out.print("1.댓글달기, 2.메뉴이동 (1 ~ 2 사이의 수 입력) : ");
+        System.out.print("1.댓글달기, 2. 댓글 수정, 3. 댓글 삭제, 4.메뉴이동 (1 ~ 4 사이의 수 입력) : ");
         int pick = sc.nextInt();
+        int result = 0;
         if(pick == 1){
             System.out.print("댓글 입력 : ");
             String rcontents = sc.next();
@@ -147,7 +148,23 @@ public class System_Ui {
             }
             else System.out.println("댓글 등록 실패");
             showReplyMenu(id, bno, pick);
-        }else if(pick == 2){
+        }else if(pick == 2) {
+        	int rst1 = replyDao.rightMember(id);
+        	if(rst1 > 0) {
+        		System.out.println("댓글 내용을 수정합니다.");
+        		System.out.println("댓글 입력 : ");
+        		String rcontents = sc.next();
+        		
+        		result = replyDao.updateReply(id, rcontents);
+        		if(result > 0) System.out.println("댓글이 수정되었습니다.");
+        		else System.out.println("댓글 수정 실패");
+        	}
+        	else {
+        		System.out.println("댓글을 작성한 회원님 삭제할 수 있습니다.");
+        	}
+        	showReply(bno);
+        }
+        else if(pick == 4){
             loginMenu(id);
         }else {
             System.out.println("1 ~ 2 사이의 수 입력해주세요.");
