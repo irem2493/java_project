@@ -9,6 +9,8 @@ public class System_Ui {
     UserDAO userDao = new UserDAO();
     ReplyDAO replyDao = new ReplyDAO();
     ArrayList<BoardDTO> boardList = new ArrayList<>();
+    ArrayList<Integer> rnoList = new ArrayList<>();
+    ArrayList<ReplyDTO> replyList;
     int menu = -1;
     public void intro() {
         System.out.println("시스템을 실행합니다.");
@@ -19,7 +21,6 @@ public class System_Ui {
         showBoard();
         System.out.print("1.로그인, 2.회원가입, 3.게시물 보기, 0.종료 (0 ~ 3 사이의 수 입력) : ");
         menu = sc.nextInt();
-
         if(menu == 1) { //로그인
             System.out.println("로그인을 합니다.");
             System.out.print("아이디 입력 : ");
@@ -69,7 +70,7 @@ public class System_Ui {
         String title, contents;
         BoardDTO boardDTO;
         showBoard();
-        System.out.print("1.게시물 등록, 2.게시물 보기, 3.로그아웃 (1 ~ 3 사이의 수 입력) : ");
+        System.out.print("1.게시물 등록, 2.게시물 보기, 3.게시물 수정, 4.게시물 삭제, 5.로그아웃 (1 ~ 5 사이의 수 입력) : ");
         sel = sc.nextInt();
         if(sel == 1){   //게시물 등록
             System.out.println("게시물을 등록합니다.");
@@ -82,8 +83,7 @@ public class System_Ui {
             int result = boradDao.insertBoard(boardDTO);
             if(result > 0) System.out.println("게시물이 등록되었습니다.");
             else System.out.println("게시물 등록 실패");
-            showBoard();
-            showMenu();
+            loginMenu(id);
         }else if(sel == 2){
             if(boardList.size() > 0) {
                 System.out.print("확인 게시물 번호 입력 : ");
@@ -97,11 +97,24 @@ public class System_Ui {
                 loginMenu(id);
             }
         }else if(sel == 3){
+            System.out.println("게시물을 수정합니다.");
+            System.out.print("게시물 번호 입력 : ");
+            int bno = sc.nextInt();
+            int rsl1 = boradDao.rightMember(bno,id);
+            if(rsl1 > 0){
+                System.out.print("수정할 게시물 내용 : ");
+                contents = sc.next();
+                int result = boradDao.updateBoard(contents, id, bno);
+                if(result > 0) System.out.println("게시물이 수정되었습니다.");
+                else System.out.println("게시물 수정 실패");
+            }else System.out.println("게시물을 작성한 회원님만 삭제할 수 있습니다.");
+        }
+        else if(sel == 5){
             int result = userDao.updateLogoutUser(id);
             if(result > 0) System.out.println("로그아웃 되었습니다.");
             showMenu();
         }else{
-            System.out.println("1 ~ 3 사이의 수 입력하세요.");
+            System.out.println("1 ~ 5 사이의 수 입력하세요.");
             int result = userDao.updateLogoutUser(id);
             loginMenu(id);
         }
@@ -134,56 +147,85 @@ public class System_Ui {
     }
 
     void showReplyMenu(String id, int bno, int sel){
-        System.out.print("1.댓글달기, 2.댓글 수정, 3. 댓글 삭제, 4.메뉴이동 (1 ~ 4 사이의 수 입력) : ");
+        int find = 0;
+        System.out.print("1.댓글달기, 2.댓글 수정, 3.댓글 삭제, 4.메뉴이동 (1 ~ 4 사이의 수 입력) : ");
         int pick = sc.nextInt();
         int result = 0;
         if(pick == 1){
             System.out.print("댓글 입력 : ");
             String rcontents = sc.next();
             ReplyDTO replyDto = new ReplyDTO(bno, rcontents, id);
-            if(replyDao.insertReply(replyDto) > 0) {
-                System.out.println("댓글이 등록되었습니다.");
-                showBoardContents(sel);
-                showReply(bno);
-            }
+            if(replyDao.insertReply(replyDto) > 0) System.out.println("댓글이 등록되었습니다.");
             else System.out.println("댓글 등록 실패");
-            showReplyMenu(id, bno, pick);
+            showBoardContents(sel);
+            showReply(bno);
         }else if(pick == 2) {
+            find = 0;
             System.out.println("댓글 내용을 수정합니다.");
-            System.out.print("수정할 댓글 번호 입력 : ");
-            int rno = sc.nextInt();
-            //댓글의 개수 카운터해서 카운터 바깥 수가 입력되면 다시 숫자 입력하라고 하기
-            
-            int rst1 = replyDao.rightMember(rno, id);
-            //입력된 댓글 번호로 조회한 결과의 id와 같으면 댓글 수정
-            if(rst1 == 1){
-                System.out.print("댓글 입력 : ");
-                sc.nextLine();
-                String rcontents = sc.nextLine();
-                result = replyDao.updateReply(rno, id, rcontents);
-                if(result > 0) System.out.println("댓글이 수정되었습니다.");
-                else System.out.println("댓글 수정 실패");
-            }
-            else {
-                System.out.println("댓글을 작성한 회원님만 수정할 수 있습니다.");
-            }
+            if(replyList.size() > 0) {
+                System.out.print("수정할 댓글 번호 입력 : ");
+                int rno = sc.nextInt();
+                for (int r : rnoList) {
+                    if (r == rno) find++;
+                }
+                if (find == 0) System.out.println("댓글 번호를 확인해주세요.");
+                else {
+                    int rst1 = replyDao.rightMember(rno, id);
+                    //입력된 댓글 번호로 조회한 결과의 id와 같으면 댓글 수정
+                    if (rst1 == 1) {
+                        System.out.print("댓글 입력 : ");
+                        sc.nextLine();
+                        String rcontents = sc.nextLine();
+                        result = replyDao.updateReply(rno, id, rcontents);
+                        if (result > 0) System.out.println("댓글이 수정되었습니다.");
+                        else System.out.println("댓글 수정 실패");
+                    } else System.out.println("댓글을 작성한 회원님만 수정할 수 있습니다.");
+                }
+            }else System.out.println("수정할 댓글이 없습니다.");
+            showBoardContents(sel);
+            showReply(bno);
+            showReplyMenu(id, bno, pick);
+        }else if(pick == 3){
+            find = 0;
+            System.out.println("댓글을 삭제합니다.");
+            if(replyList.size() > 0){
+                System.out.print("삭제할 댓글 번호 입력 : ");
+                int rno = sc.nextInt();
+                for(int r : rnoList){
+                    if(r == rno) find++;
+                }
+                if(find == 0) System.out.println("댓글 번호를 확인해주세요.");
+                else{
+                    int rst1 = replyDao.rightMember(rno, id);
+                    if(rst1 > 0){
+                        result = replyDao.deleteReply(rno, id);
+                        if(result > 0) System.out.println("댓글이 삭제되었습니다.");
+                        else System.out.println("댓글 삭제 실패");
+                    }else System.out.println("댓글을 작성한 회원님만 삭제할 수 있습니다.");
+                }
+            }else System.out.println("삭제할 댓글이 없습니다.");
+            showBoardContents(sel);
+            showReply(bno);
             showReplyMenu(id, bno, pick);
         }
         else if(pick == 4){
             loginMenu(id);
         }else {
             System.out.println("1 ~ 4 사이의 수 입력해주세요.");
+            showBoardContents(sel);
+            showReply(bno);
             showReplyMenu(id, bno, pick);
         }
     }
 
     void showReply(int bno){
         System.out.println("번호    작성자          댓글내용              작성일자");
-        ArrayList<ReplyDTO> replyList = replyDao.selectReply(bno);
+        replyList = replyDao.selectReply(bno);
         if(replyList.size() > 0){
             for(int i = 0; i < replyList.size(); i++) {
                 System.out.println("-----------------------------------");
                 System.out.println(replyList.get(i).getRno() + "    " + replyList.get(i).getUid() + "          " + replyList.get(i).getRcontents() + "    "+replyList.get(i).getR_create_date());
+                rnoList.add(replyList.get(i).getRno());
             }
             System.out.println("-----------------------------------");
         }else {

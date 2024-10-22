@@ -41,6 +41,7 @@ public class ReplyDAO {
         }
         return r;
     }
+    //댓글을 단 아이디가 맞는지 확인하는 함수
     public int rightMember(int rno, String uid) {
         String query = "SELECT uid FROM replyTable WHERE rno = ?;";
         int result = 0;
@@ -65,6 +66,20 @@ public class ReplyDAO {
             pstmt.setString(1, rcontents);
             pstmt.setString(2, uid);
             pstmt.setInt(3, rno);
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public int deleteReply(int rno, String id){
+        String query = "DELETE FROM replyTable WHERE uid = ? and rno = ?;";
+        int result = 0;
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, id);
+            pstmt.setInt(2, rno);
             result = pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
