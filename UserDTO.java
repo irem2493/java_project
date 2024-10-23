@@ -1,12 +1,11 @@
-package c0930;
+package board_user_management;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import java.sql.Date;
 
 public class UserDTO {
-	static int uno = 0;
-    String uid, upw;
-    Date join_date, login_date, logout_date;
+    private static int uno = 0;
+    private String uid, upw;
+    private Date join_date, login_date, logout_date;
 
     public Date getJoin_date() {
         return join_date;
@@ -33,9 +32,8 @@ public class UserDTO {
     public Date getLogin_date() {
         return login_date;
     }
-    
+
     public Date getLogout_date() {
         return logout_date;
     }
-   
 }

@@ -1,11 +1,12 @@
-package c0930;
+package board_user_management;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 public class BoardDTO {
-	int bno;
-    String title, contents, uid;
-    Date create_date;
+    private int bno;
+    private String title, contents, uid;
+    private Date create_date;
 
     public BoardDTO(String title, String uid) {
         this.title = title;

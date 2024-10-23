@@ -1,16 +1,12 @@
-package c0930;
+package board_user_management;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import dictionary.DBConn;
+
+import java.sql.*;
 import java.time.LocalDateTime;
 
-import c0925.DBConn;
-
 public class UserDAO {
-	Connection conn = DBConn.getConnection();
+    Connection conn = DBConn.getConnection();
 
     public int checkId(String uid) {
         String query = "SELECT uid FROM userTable WHERE uid = ?;";
