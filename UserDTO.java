@@ -1,14 +1,14 @@
-package board_user_management;
+package c0930;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class UserDTO {
-    static int uno = 0;
+	static int uno = 0;
     String uid, upw;
-    Timestamp join_date, login_date, logout_date;
+    Date join_date, login_date, logout_date;
 
-    public Timestamp getJoin_date() {
+    public Date getJoin_date() {
         return join_date;
     }
 
@@ -16,8 +16,6 @@ public class UserDTO {
         ++uno;
         this.uid = uid;
         this.upw = upw;
-        LocalDateTime dateTime = LocalDateTime.now();
-        join_date = Timestamp.valueOf(dateTime);
     }
     public int getUno(){return uno;}
     public String getUid() {
@@ -32,16 +30,12 @@ public class UserDTO {
     public void setUpw(String upw) {
         this.upw = upw;
     }
-    public Timestamp getLogin_date() {
+    public Date getLogin_date() {
         return login_date;
     }
-    public void setLogin_date(Timestamp login_date) {
-        this.login_date = login_date;
-    }
-    public Timestamp getLogout_date() {
+    
+    public Date getLogout_date() {
         return logout_date;
     }
-    public void setLogout_date(Timestamp logout_date) {
-        this.logout_date = logout_date;
-    }
+   
 }

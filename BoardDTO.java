@@ -1,18 +1,15 @@
-package board_user_management;
+package c0930;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class BoardDTO {
-    int bno;
+	int bno;
     String title, contents, uid;
-    Timestamp join_date;
+    Date create_date;
 
     public BoardDTO(String title, String uid) {
         this.title = title;
         this.uid = uid;
-        LocalDateTime dateTime = LocalDateTime.now();
-        join_date = Timestamp.valueOf(dateTime);
     }
     public void setBno(int bno){this.bno = bno;}
     public int getBno(){return bno;}
@@ -40,11 +37,11 @@ public class BoardDTO {
         this.uid = uid;
     }
 
-    public Timestamp getCreateDate() {
-        return join_date;
+    public Date getCreateDate() {
+        return create_date;
     }
 
-    public void setCreateDate(Timestamp join_date) {
-        this.join_date = join_date;
+    public void setCreateDate(Date create_date) {
+        this.create_date = create_date;
     }
 }

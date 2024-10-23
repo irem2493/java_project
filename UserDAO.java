@@ -1,12 +1,16 @@
-package board_user_management;
+package c0930;
 
-import dictionary.DBConn;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import c0925.DBConn;
+
 public class UserDAO {
-    Connection conn = DBConn.getConnection();
+	Connection conn = DBConn.getConnection();
 
     public int checkId(String uid) {
         String query = "SELECT uid FROM userTable WHERE uid = ?;";
@@ -44,13 +48,10 @@ public class UserDAO {
     }
 
     void updateLoginUser(String uid) {
-        String query = "UPDATE userTable SET login_date = ? WHERE uid = ?;";
+        String query = "UPDATE userTable SET login_date = NOW() WHERE uid = ?;";
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
-            LocalDateTime dateTime = LocalDateTime.now();
-            Timestamp login_date = Timestamp.valueOf(dateTime);
-            stmt.setTimestamp(1, login_date);
-            stmt.setString(2, uid);
+            stmt.setString(1, uid);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,14 +59,11 @@ public class UserDAO {
     }
 
     public int updateLogoutUser(String uid) {
-        String query = "UPDATE userTable SET logout_date = ? WHERE uid = ?;";
+        String query = "UPDATE userTable SET logout_date = NOW() WHERE uid = ?;";
         int result = 0;
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
-            LocalDateTime dateTime = LocalDateTime.now();
-            Timestamp logout_date = Timestamp.valueOf(dateTime);
-            stmt.setTimestamp(1, logout_date);
-            stmt.setString(2, uid);
+            stmt.setString(1, uid);
             result = stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,14 +73,13 @@ public class UserDAO {
 
     public String joinUser(UserDTO user) {
         String alert = "회원가입을 실패하였습니다.";
-        String query = "INSERT INTO userTable(uno, uid, upw, join_date) VALUES(?,?,?,?);";
+        String query = "INSERT INTO userTable(uno, uid, upw, join_date) VALUES(?,?,?,NOW());";
         int result = 0;
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1,user.getUno());
             stmt.setString(2, user.getUid());
             stmt.setString(3, user.getUpw());
-            stmt.setTimestamp(4, user.getJoin_date());
             result = stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
